@@ -14,3 +14,10 @@ Authors
 * Yves Bastos
 * Felipe Crispim
 * Jonathas
+
+
+=================================
+Tutorials
+
+1) Interface: https://www.youtube.com/watch?v=FKJxPlWQp9Y
+2) Minimax applied to checkers: http://ai-depot.com/articles/minimax-explained/3/
