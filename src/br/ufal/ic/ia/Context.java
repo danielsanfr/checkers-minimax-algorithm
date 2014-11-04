@@ -44,8 +44,29 @@ public class Context
 				}
 			}
 		}
+		quantidadePecas();
 	}
 
+	public int[] quantidadePecas() {
+		//claro, escuro
+		int[] totalPecas = {0,0};
+		for (int i=0; i<WIDTH; i++) {
+			for (int j=0; j<HEIGHT; j++) {
+				if ((i % 2 == j % 2) && (pieces[i][j] != null)) {
+					if (pieces[i][j].isDark()) {
+						totalPecas[1]+=1;
+					}
+					else if (pieces[i][j].isLight()) {
+						totalPecas[0]+=1;
+					}
+				}
+			}
+ 		}
+		System.out.println("Peças claras: " + totalPecas[0] + "\nPeças escuras: " + totalPecas[1]);
+
+		return totalPecas;
+	}
+	
 	/**
 	 * Returns whether or not it is the light player's turn.
 	 * @return true if light player's turn, otherwise false

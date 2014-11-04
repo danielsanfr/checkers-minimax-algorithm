@@ -23,6 +23,8 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	private Context contexto;
 	private Quadrado[][] quadrados = new Quadrado[Context.WIDTH][Context.HEIGHT];
 	private boolean mouseListener;
+	
+	
 	private Jogador jogador1;
 	private Jogador jogador2;
 
@@ -194,7 +196,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 					detargetAllSquares();
 					source.deselect();
 					source = null;
-
+					contexto.quantidadePecas();
 					// context changed but make sure we visualise the changes
 					setPieces();
 					repaint();
@@ -212,6 +214,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 				jogador1.stopTurn();
 			}
 		}
+		//System.out.println("Peças claras: " + contexto.quantidadePecas()[0] + "\nPeças escuras: " + contexto.quantidadePecas()[1]);
     }
 
 	/**
