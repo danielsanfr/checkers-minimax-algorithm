@@ -2,10 +2,10 @@ package br.ufal.ic.ia;
 
 /**
  *
- * @author Arjen Hoogesteger
+ * @author yvesbastos
  * @version 0.1
  */
 public interface PlayerListener
 {
-	public void finishedTurn(Jogador p);
+	public void acabouRodada(Jogador p);
 }

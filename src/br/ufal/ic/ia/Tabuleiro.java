@@ -286,7 +286,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
     }
 
 	@Override
-	public void finishedTurn(Jogador p)
+	public void acabouRodada(Jogador p)
 	{
 		if((p.equals(jogador1) && !jogador2.hasTurn()) || (p.equals(jogador2) && !jogador1.hasTurn()))
 		{

@@ -22,6 +22,6 @@ public class JogadorMinimax extends Jogador
 	{
 		super.minhaVez();
 		
-		// yet to be done quite important however
+		// implementar função minimax
 	}
 }

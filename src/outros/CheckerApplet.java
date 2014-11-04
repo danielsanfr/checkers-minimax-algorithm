@@ -1,4 +1,4 @@
-package br.ufal.ic.ia;
+package outros;
 
 import java.applet.Applet;
 import java.awt.*;

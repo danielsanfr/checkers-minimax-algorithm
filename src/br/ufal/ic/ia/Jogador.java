@@ -43,18 +43,18 @@ public class Jogador
 	{
 		listeners.add(l);
 	}
-
+	
 	/**
-	 *
-	 * @param board
+	 * Retorna o nome do jogador
+	 * @return the name
 	 */
-	public void setBoard(Tabuleiro board)
+	public String getName()
 	{
-		this.tabuleiro = board;
+		return nome;
 	}
-
+	
 	/**
-	 * 
+	 * Retorna o tabuleiro
 	 * @return
 	 */
 	public Tabuleiro getBoard()
@@ -63,12 +63,12 @@ public class Jogador
 	}
 
 	/**
-	 * Returns the name of the player.
-	 * @return the name
+	 * Configura o tabuleiro
+	 * @param board
 	 */
-	public String getName()
+	public void setBoard(Tabuleiro board)
 	{
-		return nome;
+		this.tabuleiro = board;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class Jogador
 		minhaVez = false;
 
 		for(PlayerListener l : listeners)
-			l.finishedTurn(this);
+			l.acabouRodada(this);
 	}
 
 	/**
