@@ -14,27 +14,27 @@ public class ItemRei extends Item
 	 * 
 	 * @return
 	 */
-	public static ItemRei criarReiClaro()
+	public static ItemRei criarReiClaro(Jogador dono)
 	{
-		return new ItemRei(Item.CLARO);
+		return new ItemRei(Item.CLARO, dono);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static ItemRei criarReiEscuro()
+	public static ItemRei criarReiEscuro(Jogador dono)
 	{
-		return new ItemRei(Item.ESCURO);
+		return new ItemRei(Item.ESCURO, dono);
 	}
 
 	/**
 	 * 
 	 * @param color
 	 */
-	protected ItemRei(Color color)
+	protected ItemRei(Color color, Jogador dono)
 	{
-		super(color);
+		super(color, dono);
 	}
 
 	@Override

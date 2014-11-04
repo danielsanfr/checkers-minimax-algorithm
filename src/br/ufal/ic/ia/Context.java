@@ -19,8 +19,14 @@ public class Context
 	private char turn = TURN_DARK;	// dark is basically an alias for player 1
 	private int remainingJumpX = -1, remainingJumpY = -1;
 
-	public Context()
+	private Jogador jogador1;
+	private Jogador jogador2;
+	
+	public Context(Jogador jogador1, Jogador jogador2)
 	{
+		this.jogador1=jogador1;
+		this.jogador2=jogador2;
+		
 		// criar contexto inicial
 		for(int i = 0; i < WIDTH; i++)
 		{
@@ -30,9 +36,9 @@ public class Context
 				if(i % 2 == j % 2)
 				{
 					if(j < (HEIGHT / 2) - 1)
-						pieces[i][j] = Item.criarItemClaro();
+						pieces[i][j] = Item.criarItemClaro(jogador1);
 					else if(j > HEIGHT / 2)
-						pieces[i][j] = Item.criarItemEscuro();
+						pieces[i][j] = Item.criarItemEscuro(jogador2);
 					else
 						pieces[i][j] = null;
 				}
@@ -123,9 +129,9 @@ public class Context
 			if(!(pieces[dstX][dstY] instanceof ItemRei)) // has yet to be crowned perhaps
 			{
 				if((dstY == HEIGHT - 1) && pieces[dstX][dstY].isLight())
-					pieces[dstX][dstY] = ItemRei.criarReiClaro();
+					pieces[dstX][dstY] = ItemRei.criarReiClaro(jogador1);
 				else if(dstY == 0 && pieces[dstX][dstY].isDark())
-					pieces[dstX][dstY] = ItemRei.criarReiEscuro();
+					pieces[dstX][dstY] = ItemRei.criarReiEscuro(jogador2);
 			}
 
 			movementHistory.add(new int[]{srcX, srcY, dstX, dstY});

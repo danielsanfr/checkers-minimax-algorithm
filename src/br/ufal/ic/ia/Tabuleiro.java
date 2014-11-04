@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author Arjen Hoogesteger
+ * @author yvesbastos
  * @version 0.3
  */
 public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
@@ -72,7 +72,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 		}
 		
 		// configura o contexto inicial do tabuleiro 
-		setContext(new Context());		
+		setContext(new Context(jogador1, jogador2));		
 	}
 
 	/**
@@ -144,7 +144,15 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	@Override
     public void mouseClicked(MouseEvent e)
     {
-		if(mouseListener)
+		boolean jogadorApertouNaSua;
+		if (((Quadrado) e.getSource()).getPiece() == null) {
+			jogadorApertouNaSua = true;
+		}
+		else {
+			jogadorApertouNaSua = ( (((Quadrado) e.getSource()).getPiece().isLight() && contexto.isTurnLight()) || (((Quadrado) e.getSource()).getPiece().isDark() && contexto.isTurnDark()) );
+		}
+		
+		if(mouseListener && jogadorApertouNaSua)
 		{
 			if(source == null)
 			{
@@ -155,9 +163,9 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 				{
 					//so selecionar peca se for a vez do jogador. falta fazer o mesmo para quadrado azul
 
-					if (((source.getPiece().getCor() == Item.CLARO)&&contexto.isTurnLight()) || ((source.getPiece().getCor() == Item.ESCURO)&&(contexto.isTurnDark()))) {
+					//if (((source.getPiece().getCor() == Item.CLARO)&&contexto.isTurnLight()) || ((source.getPiece().getCor() == Item.ESCURO)&&(contexto.isTurnDark()))) {
 						source.select();
-					}
+					//}
 
 					ArrayList<int[]> targets = contexto.pieceCouldMoveToFrom(source.getCoordinateX(), source.getCoordinateY());
 					for(int[] target : targets)

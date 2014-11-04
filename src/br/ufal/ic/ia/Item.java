@@ -5,8 +5,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author Arjen Hoogesteger
- * @author Elio Tolhoek
+ * @author yvesbastos
  * @version 0.1
  */
 public class Item
@@ -16,33 +15,42 @@ public class Item
 
 	private Color color;
 	
-	//private Jogador donoPeca;
+	private Jogador dono;
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Jogador getDono() {
+		return dono;
+	}
+	
 	/**
 	 *
 	 * @return
 	 */
-	public static Item criarItemClaro()
+	public static Item criarItemClaro(Jogador dono)
 	{
-		return new Item(CLARO);
+		return new Item(CLARO, dono);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static Item criarItemEscuro()
+	public static Item criarItemEscuro(Jogador dono)
 	{
-		return new Item(ESCURO);
+		return new Item(ESCURO, dono);
 	}
 
 	/**
 	 * Creates a new Piece instance.
 	 * @param color the piece's color
 	 */
-	protected Item(Color color)
+	protected Item(Color color, Jogador dono)
 	{
 		this.color = color;
+		this.dono = dono;
 	}
 
 	/**
