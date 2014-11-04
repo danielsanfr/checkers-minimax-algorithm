@@ -29,18 +29,18 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	/**
 	 * 
 	 */
-	public Tabuleiro(Jogador player1, Jogador player2)
+	public Tabuleiro(Jogador jogador1, Jogador jogador2)
 	{
-		// set players
-		this.jogador1 = player1;
+		// configura jogadores para este tabuleiro
+		this.jogador1 = jogador1;
 		this.jogador1.setBoard(this);
 		this.jogador1.addListener(this);
-		this.jogador2 = player2;
+		this.jogador2 = jogador2;
 		this.jogador2.setBoard(this);
 		this.jogador2.addListener(this);
 		
-		// by default disable the mouse listener
-		disableMouseListener();
+		// desativa mouse listener por padrão 
+		desativarMouseListener();
 
 		// please take care of the gap
 		((FlowLayout)getLayout()).setHgap(0);
@@ -53,32 +53,32 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 		{
 			for(int j = 0; j < Context.HEIGHT; j++)
 			{
-				// decide weather to create a black or white square
-				quadrados[i][j] = i % 2 == j % 2 ? new Quadrado(new Color(124, 67, 0, 168), i, j) : new Quadrado(new Color(244, 241, 237), i, j);
+				// decide se cria quadrado preto ou branco
+				quadrados[i][j] = i % 2 == j % 2 ? new Quadrado(new Color(250, 67, 0, 168), i, j) : new Quadrado(new Color(244, 241, 237), i, j);
 
-				// set preferred size per square
+				// definir tamanho do quadrado
 				quadrados[i][j].setPreferredSize(new Dimension(LARGURA_QUADRADO, ALTURA_QUADRADO));
 
-				// add the mouselistener
+				// adiciona mouselistener
                 quadrados[i][j].addMouseListener(this);
 			}
 		}
 
-		// add the squares to the panel in the right order
+		// adiciona quadrados ao tabuleiro na ordem correta
 		for(int i = Context.HEIGHT - 1; i >= 0; i--)
 		{
 			for(int j = 0; j < Context.WIDTH; j++)
 				add(quadrados[j][i]);
 		}
-
-		// finally set the board's initial context
+		
+		// configura o contexto inicial do tabuleiro 
 		setContext(new Context());		
 	}
 
 	/**
 	 *
 	 */
-	public void enableMouseListener()
+	public void ativarMouseListener()
 	{
 		mouseListener = true;
 	}
@@ -86,7 +86,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	/**
 	 * 
 	 */
-	public void disableMouseListener()
+	public void desativarMouseListener()
 	{
 		mouseListener = false;
 	}
@@ -150,10 +150,14 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 			{
 				// no source has been set yet
 				source = (Quadrado) e.getSource();
-
+				
 				if(source.getCoordinateX() % 2 == source.getCoordinateY() % 2)
 				{
-					source.select();
+					//so selecionar peca se for a vez do jogador. falta fazer o mesmo para quadrado azul
+
+					if (((source.getPiece().getCor() == Item.CLARO)&&contexto.isTurnLight()) || ((source.getPiece().getCor() == Item.ESCURO)&&(contexto.isTurnDark()))) {
+						source.select();
+					}
 
 					ArrayList<int[]> targets = contexto.pieceCouldMoveToFrom(source.getCoordinateX(), source.getCoordinateY());
 					for(int[] target : targets)
@@ -242,15 +246,15 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 
 	public static void main(String[] args)
 	{
-		Tabuleiro b = new Tabuleiro(new Jogador("Arjen", true), new Jogador("Job", true));
+		Tabuleiro b = new Tabuleiro(new Jogador("Raphael", true), new Jogador("João", true));
 
-		JFrame frame = new JFrame("Checkers");
+		JFrame frame = new JFrame("Damas");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		JPanel boardPane = new JPanel(new FlowLayout());
 		((FlowLayout)boardPane.getLayout()).setAlignment(FlowLayout.CENTER);
 		boardPane.add(b);
-
+		
 		frame.getContentPane().setLayout(new java.awt.BorderLayout());
 		frame.getContentPane().add(boardPane, java.awt.BorderLayout.CENTER);
 		frame.pack();
@@ -290,7 +294,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	{
 		if((p.equals(jogador1) && !jogador2.hasTurn()) || (p.equals(jogador2) && !jogador1.hasTurn()))
 		{
-			disableMouseListener(); // player will reactivate it if necessary
+			desativarMouseListener(); // player will reactivate it if necessary
 
 			if(p.equals(jogador1))
 				jogador2.minhaVez();
