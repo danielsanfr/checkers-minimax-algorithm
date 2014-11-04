@@ -2,19 +2,19 @@ package br.ufal.ic.ia;
 
 /**
  *
- * @author Arjen Hoogesteger
+ * @author yvesbastos
  * @version 0.1
  */
-public class MinimaxPlayer extends Jogador
+public class JogadorMinimax extends Jogador
 {
 
 	/**
 	 * 
 	 * @param name
 	 */
-	public MinimaxPlayer(String name)
+	public JogadorMinimax()
 	{
-		super(name);
+		super("CPU", false);
 	}
 	
 	@Override

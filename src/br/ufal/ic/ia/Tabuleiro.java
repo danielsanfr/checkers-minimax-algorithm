@@ -242,7 +242,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 
 	public static void main(String[] args)
 	{
-		Tabuleiro b = new Tabuleiro(new JogadorHumano("Arjen"), new JogadorHumano("Job"));
+		Tabuleiro b = new Tabuleiro(new Jogador("Arjen", true), new Jogador("Job", true));
 
 		JFrame frame = new JFrame("Checkers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

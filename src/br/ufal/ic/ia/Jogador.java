@@ -4,25 +4,37 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Arjen Hoogesteger
+ * @author yvesbastos
  * @version 0.2
  */
-public abstract class Jogador
+public class Jogador
 {
 	private String nome;
 	private Tabuleiro tabuleiro;
 	private boolean minhaVez = false;
 	private ArrayList<PlayerListener> listeners = new ArrayList<PlayerListener>();
-
+	private final boolean humano;
+	
 	/**
-	 * Creates a new Player object.
-	 * @param name the player's name
+	 * Construtor: cria um jogador
+	 * @param nome do jogador
+	 * @param humano boolean indicando se o jogador é humano ou CPU
 	 */
-	public Jogador(String name)
+	public Jogador(String nome, boolean humano)
 	{
-		this.nome = name;
+		this.nome = nome;
+		
+		this.humano = humano;
 	}
-
+	
+	/**
+	 * Construtor: cria um jogador CPU
+	 */
+	public Jogador() {
+		this.nome="Computador";
+		this.humano=false;
+	}
+	
 	/**
 	 * 
 	 * @param l
@@ -65,6 +77,11 @@ public abstract class Jogador
 	public void minhaVez()
 	{
 		minhaVez = true;
+		
+		if (humano) {
+			System.out.println("Vez do(a) " + getName() + "!");
+			getBoard().enableMouseListener();	// we're human and need the board to listen to us
+		} 
 	}
 
 	/**
