@@ -80,7 +80,7 @@ public class Jogador
 		
 		if (humano) {
 			System.out.println("Vez do(a) " + getName() + "!");
-			getBoard().enableMouseListener();	// we're human and need the board to listen to us
+			getBoard().desativarMouseListener();	// we're human and need the board to listen to us
 		} 
 	}
 
