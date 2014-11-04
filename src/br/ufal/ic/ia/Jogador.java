@@ -7,13 +7,13 @@ import java.util.ArrayList;
  * @author yvesbastos
  * @version 0.2 
  */
-public class Jogador
+public abstract class Jogador
 {
 	private String nome;
 	private Tabuleiro tabuleiro;
-	private boolean minhaVez = false;
+	protected boolean minhaVez = false;
 	private ArrayList<PlayerListener> listeners = new ArrayList<PlayerListener>();
-	private final boolean humano;
+	protected final boolean humano;
 	
 	/**
 	 * Construtor: cria um jogador

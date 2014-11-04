@@ -27,54 +27,56 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	
 	private Jogador jogador1;
 	private Jogador jogador2;
+	//private JogadorMinimax jogadorminimax;
 
-	/**
-	 * 
-	 */
 	public Tabuleiro(Jogador jogador1, Jogador jogador2)
 	{
+		inicializar(jogador1, jogador2);	
+	}
+	
+	private void inicializar(Jogador jogador1, Jogador jogador2) {
 		// configura jogadores para este tabuleiro
-		this.jogador1 = jogador1;
-		this.jogador1.setBoard(this);
-		this.jogador1.addListener(this);
-		this.jogador2 = jogador2;
-		this.jogador2.setBoard(this);
-		this.jogador2.addListener(this);
-		
-		// desativa mouse listener por padrão 
-		desativarMouseListener();
+				this.jogador1 = jogador1;
+				this.jogador1.setBoard(this);
+				this.jogador1.addListener(this);
+				this.jogador2 = jogador2;
+				this.jogador2.setBoard(this);
+				this.jogador2.addListener(this);
+				
+				// desativa mouse listener por padrão 
+				desativarMouseListener();
 
-		// please take care of the gap
-		((FlowLayout)getLayout()).setHgap(0);
-		((FlowLayout)getLayout()).setVgap(0);
+				// please take care of the gap
+				((FlowLayout)getLayout()).setHgap(0);
+				((FlowLayout)getLayout()).setVgap(0);
 
-		// set preferred size for the board
-		setPreferredSize(new Dimension(Context.WIDTH * LARGURA_QUADRADO, Context.HEIGHT * ALTURA_QUADRADO));
+				// set preferred size for the board
+				setPreferredSize(new Dimension(Context.WIDTH * LARGURA_QUADRADO, Context.HEIGHT * ALTURA_QUADRADO));
 
-		for(int i = 0; i < Context.WIDTH; i++)
-		{
-			for(int j = 0; j < Context.HEIGHT; j++)
-			{
-				// decide se cria quadrado preto ou branco
-				quadrados[i][j] = i % 2 == j % 2 ? new Quadrado(new Color(250, 67, 0, 168), i, j) : new Quadrado(new Color(244, 241, 237), i, j);
+				for(int i = 0; i < Context.WIDTH; i++)
+				{
+					for(int j = 0; j < Context.HEIGHT; j++)
+					{
+						// decide se cria quadrado preto ou branco
+						quadrados[i][j] = i % 2 == j % 2 ? new Quadrado(new Color(250, 67, 0, 168), i, j) : new Quadrado(new Color(244, 241, 237), i, j);
 
-				// definir tamanho do quadrado
-				quadrados[i][j].setPreferredSize(new Dimension(LARGURA_QUADRADO, ALTURA_QUADRADO));
+						// definir tamanho do quadrado
+						quadrados[i][j].setPreferredSize(new Dimension(LARGURA_QUADRADO, ALTURA_QUADRADO));
 
-				// adiciona mouselistener
-                quadrados[i][j].addMouseListener(this);
-			}
-		}
+						// adiciona mouselistener
+		                quadrados[i][j].addMouseListener(this);
+					}
+				}
 
-		// adiciona quadrados ao tabuleiro na ordem correta
-		for(int i = Context.HEIGHT - 1; i >= 0; i--)
-		{
-			for(int j = 0; j < Context.WIDTH; j++)
-				add(quadrados[j][i]);
-		}
-		
-		// configura o contexto inicial do tabuleiro 
-		setContext(new Context(jogador1, jogador2));		
+				// adiciona quadrados ao tabuleiro na ordem correta
+				for(int i = Context.HEIGHT - 1; i >= 0; i--)
+				{
+					for(int j = 0; j < Context.WIDTH; j++)
+						add(quadrados[j][i]);
+				}
+				
+				// configura o contexto inicial do tabuleiro 
+				setContext(new Context(jogador1, jogador2));
 	}
 
 	/**
@@ -257,8 +259,13 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 
 	public static void main(String[] args)
 	{
-		Tabuleiro b = new Tabuleiro(new Jogador("Raphael", true), new Jogador("João", true));
-
+		JogadorMinimax jogadormini = new JogadorMinimax();
+		JogadorHumano jogadorhuman = new JogadorHumano("Raphael");
+		
+		Tabuleiro b = new Tabuleiro(jogadorhuman, jogadormini);
+		//comentar se jogador2 for humano:
+		((JogadorMinimax) b.jogador2).setContexto(b.getContext());
+		
 		JFrame frame = new JFrame("Damas");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
