@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  *
  * @author yvesbastos
- * @version 0.2
+ * @version 0.2 
  */
 public class Jogador
 {
@@ -80,7 +80,7 @@ public class Jogador
 		
 		if (humano) {
 			System.out.println("Vez do(a) " + getName() + "!");
-			getBoard().desativarMouseListener();	// we're human and need the board to listen to us
+			getBoard().ativarMouseListener();	// we're human and need the board to listen to us
 		} 
 	}
 
@@ -90,7 +90,7 @@ public class Jogador
 	public void stopTurn()
 	{
 		minhaVez = false;
-
+		
 		for(PlayerListener l : listeners)
 			l.acabouRodada(this);
 	}

@@ -17,6 +17,7 @@ public class Quadrado extends JPanel
 	private boolean selected = false;
 	private boolean targeted = false;
 
+	
     // the matching coordinates on the board
     private int x, y;
 

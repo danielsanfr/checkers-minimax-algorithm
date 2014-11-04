@@ -21,12 +21,12 @@ public class Context
 
 	public Context()
 	{
-		// create initial context
+		// criar contexto inicial
 		for(int i = 0; i < WIDTH; i++)
 		{
 			for(int j = 0; j < HEIGHT; j++)
 			{
-				// create and set pieces
+				// cria peças e organiza tabuleiro
 				if(i % 2 == j % 2)
 				{
 					if(j < (HEIGHT / 2) - 1)

@@ -15,6 +15,8 @@ public class Item
 	protected static final Color ESCURO = Color.BLACK;
 
 	private Color color;
+	
+	//private Jogador donoPeca;
 
 	/**
 	 *
