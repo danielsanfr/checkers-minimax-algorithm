@@ -15,29 +15,29 @@ import javax.swing.JFrame;
  * @author Arjen Hoogesteger
  * @version 0.3
  */
-public class Board extends JPanel implements MouseListener, PlayerListener
+public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 {
-	private static final int SQUARE_WIDTH = 60;
-	private static final int SQUARE_HEIGHT = 60;
-	private Square source = null;
-	private Context context;
-	private Square[][] squares = new Square[Context.WIDTH][Context.HEIGHT];
+	private static final int LARGURA_QUADRADO = 60;
+	private static final int ALTURA_QUADRADO = 60;
+	private Quadrado source = null;
+	private Context contexto;
+	private Quadrado[][] quadrados = new Quadrado[Context.WIDTH][Context.HEIGHT];
 	private boolean mouseListener;
-	private Player player1;
-	private Player player2;
+	private Jogador jogador1;
+	private Jogador jogador2;
 
 	/**
 	 * 
 	 */
-	public Board(Player player1, Player player2)
+	public Tabuleiro(Jogador player1, Jogador player2)
 	{
 		// set players
-		this.player1 = player1;
-		this.player1.setBoard(this);
-		this.player1.addListener(this);
-		this.player2 = player2;
-		this.player2.setBoard(this);
-		this.player2.addListener(this);
+		this.jogador1 = player1;
+		this.jogador1.setBoard(this);
+		this.jogador1.addListener(this);
+		this.jogador2 = player2;
+		this.jogador2.setBoard(this);
+		this.jogador2.addListener(this);
 		
 		// by default disable the mouse listener
 		disableMouseListener();
@@ -47,20 +47,20 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 		((FlowLayout)getLayout()).setVgap(0);
 
 		// set preferred size for the board
-		setPreferredSize(new Dimension(Context.WIDTH * SQUARE_WIDTH, Context.HEIGHT * SQUARE_HEIGHT));
+		setPreferredSize(new Dimension(Context.WIDTH * LARGURA_QUADRADO, Context.HEIGHT * ALTURA_QUADRADO));
 
 		for(int i = 0; i < Context.WIDTH; i++)
 		{
 			for(int j = 0; j < Context.HEIGHT; j++)
 			{
 				// decide weather to create a black or white square
-				squares[i][j] = i % 2 == j % 2 ? new Square(new Color(124, 67, 0, 168), i, j) : new Square(new Color(244, 241, 237), i, j);
+				quadrados[i][j] = i % 2 == j % 2 ? new Quadrado(new Color(124, 67, 0, 168), i, j) : new Quadrado(new Color(244, 241, 237), i, j);
 
 				// set preferred size per square
-				squares[i][j].setPreferredSize(new Dimension(SQUARE_WIDTH, SQUARE_HEIGHT));
+				quadrados[i][j].setPreferredSize(new Dimension(LARGURA_QUADRADO, ALTURA_QUADRADO));
 
 				// add the mouselistener
-                squares[i][j].addMouseListener(this);
+                quadrados[i][j].addMouseListener(this);
 			}
 		}
 
@@ -68,7 +68,7 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 		for(int i = Context.HEIGHT - 1; i >= 0; i--)
 		{
 			for(int j = 0; j < Context.WIDTH; j++)
-				add(squares[j][i]);
+				add(quadrados[j][i]);
 		}
 
 		// finally set the board's initial context
@@ -96,13 +96,13 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	 */
 	private void setPieces()
 	{
-		Piece[][] pieces = context.getPieces();
+		Item[][] pieces = contexto.getPieces();
 
 		for(int i = 0; i < Context.WIDTH; i++)
 		{
 			for(int j = 0; j < Context.HEIGHT; j++)
 			{
-				squares[i][j].setPiece(pieces[i][j]);
+				quadrados[i][j].setPiece(pieces[i][j]);
 			}
 		}
 	}
@@ -113,7 +113,7 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	 */
 	public void setContext(Context context)
 	{
-		this.context = context;
+		this.contexto = context;
 		setPieces();
 	}
 
@@ -123,7 +123,7 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	 */
 	public Context getContext()
 	{
-		return context;
+		return contexto;
 	}
 
 	@Override
@@ -131,12 +131,12 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	{
 		super.repaint();
 
-		if(squares != null)
+		if(quadrados != null)
 		{			
-			for(int i = 0; i < squares.length; i++)
+			for(int i = 0; i < quadrados.length; i++)
 			{
-				for(int j = 0; j < squares[i].length; j++)
-					squares[i][j].repaint();
+				for(int j = 0; j < quadrados[i].length; j++)
+					quadrados[i][j].repaint();
 			}
 		}
 	}
@@ -149,25 +149,25 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 			if(source == null)
 			{
 				// no source has been set yet
-				source = (Square) e.getSource();
+				source = (Quadrado) e.getSource();
 
 				if(source.getCoordinateX() % 2 == source.getCoordinateY() % 2)
 				{
 					source.select();
 
-					ArrayList<int[]> targets = context.pieceCouldMoveToFrom(source.getCoordinateX(), source.getCoordinateY());
+					ArrayList<int[]> targets = contexto.pieceCouldMoveToFrom(source.getCoordinateX(), source.getCoordinateY());
 					for(int[] target : targets)
-						squares[target[0]][target[1]].target();
+						quadrados[target[0]][target[1]].target();
 				}
 				else
 					source = null;
 			}
-			else if(source.equals((Square) e.getSource()))
+			else if(source.equals((Quadrado) e.getSource()))
 			{
 				// selection equals previous set source, deselect
-				ArrayList<int[]> targets = context.pieceCouldMoveToFrom(source.getCoordinateX(), source.getCoordinateY());
+				ArrayList<int[]> targets = contexto.pieceCouldMoveToFrom(source.getCoordinateX(), source.getCoordinateY());
 				for(int[] target : targets)
-					squares[target[0]][target[1]].detarget();
+					quadrados[target[0]][target[1]].detarget();
 
 				source.deselect();
 				source = null;
@@ -175,9 +175,9 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 			else
 			{
 				// source has been set, this time destination has been selected
-				Square destination = (Square) e.getSource();
+				Quadrado destination = (Quadrado) e.getSource();
 
-				if(context.move(source.getCoordinateX(), source.getCoordinateY(), destination.getCoordinateX(), destination.getCoordinateY()))
+				if(contexto.move(source.getCoordinateX(), source.getCoordinateY(), destination.getCoordinateX(), destination.getCoordinateY()))
 				{
 					detargetAllSquares();
 					source.deselect();
@@ -191,13 +191,13 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 					System.out.println("UNABLE TO MOVE [" + source.getCoordinateX() + ", " + source.getCoordinateY() + "] -> [" + destination.getCoordinateX() + ", " + destination.getCoordinateY() + "]");
 			}
 
-			if(context.isTurnDark() && player2.hasTurn())
+			if(contexto.isTurnDark() && jogador2.hasTurn())
 			{
-				player2.stopTurn();
+				jogador2.stopTurn();
 			}
-			else if(context.isTurnLight() && player1.hasTurn())
+			else if(contexto.isTurnLight() && jogador1.hasTurn())
 			{
-				player1.stopTurn();
+				jogador1.stopTurn();
 			}
 		}
     }
@@ -206,18 +206,18 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	 * Returns player one of the game.
 	 * @return player one
 	 */
-	public Player getPlayer1()
+	public Jogador getPlayer1()
 	{
-		return player1;
+		return jogador1;
 	}
 
 	/**
 	 * Returns player two of the game.
 	 * @return player two
 	 */
-	public Player getPlayer2()
+	public Jogador getPlayer2()
 	{
-		return player2;
+		return jogador2;
 	}
 
 	/**
@@ -225,10 +225,10 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	 */
 	private void detargetAllSquares()
 	{
-		for(int i = 0; i < squares.length; i++)
+		for(int i = 0; i < quadrados.length; i++)
 		{
-			for(int j = 0; j < squares[i].length; j++)
-				squares[i][j].detarget();
+			for(int j = 0; j < quadrados[i].length; j++)
+				quadrados[i][j].detarget();
 		}
 	}
 
@@ -237,12 +237,12 @@ public class Board extends JPanel implements MouseListener, PlayerListener
 	 */
 	public void play()
 	{
-		player1.takeTurn();
+		jogador1.minhaVez();
 	}
 
 	public static void main(String[] args)
 	{
-		Board b = new Board(new HumanPlayer("Arjen"), new HumanPlayer("Job"));
+		Tabuleiro b = new Tabuleiro(new JogadorHumano("Arjen"), new JogadorHumano("Job"));
 
 		JFrame frame = new JFrame("Checkers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -286,16 +286,16 @@ public class Board extends JPanel implements MouseListener, PlayerListener
     }
 
 	@Override
-	public void finishedTurn(Player p)
+	public void finishedTurn(Jogador p)
 	{
-		if((p.equals(player1) && !player2.hasTurn()) || (p.equals(player2) && !player1.hasTurn()))
+		if((p.equals(jogador1) && !jogador2.hasTurn()) || (p.equals(jogador2) && !jogador1.hasTurn()))
 		{
 			disableMouseListener(); // player will reactivate it if necessary
 
-			if(p.equals(player1))
-				player2.takeTurn();
+			if(p.equals(jogador1))
+				jogador2.minhaVez();
 			else
-				player1.takeTurn();
+				jogador1.minhaVez();
 		}
 	}
 }

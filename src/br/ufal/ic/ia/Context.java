@@ -15,7 +15,7 @@ public class Context
 	public static final int WIDTH = 8;
 
 	private ArrayList<int[]> movementHistory = new ArrayList<int[]>();
-	private Piece[][] pieces = new Piece[WIDTH][HEIGHT];
+	private Item[][] pieces = new Item[WIDTH][HEIGHT];
 	private char turn = TURN_DARK;	// dark is basically an alias for player 1
 	private int remainingJumpX = -1, remainingJumpY = -1;
 
@@ -30,9 +30,9 @@ public class Context
 				if(i % 2 == j % 2)
 				{
 					if(j < (HEIGHT / 2) - 1)
-						pieces[i][j] = Piece.createLightPiece();
+						pieces[i][j] = Item.criarItemClaro();
 					else if(j > HEIGHT / 2)
-						pieces[i][j] = Piece.createDarkPiece();
+						pieces[i][j] = Item.criarItemEscuro();
 					else
 						pieces[i][j] = null;
 				}
@@ -63,7 +63,7 @@ public class Context
 	 * 
 	 * @return
 	 */
-	public Piece[][] getPieces()
+	public Item[][] getPieces()
 	{
 		return pieces;
 	}
@@ -120,12 +120,12 @@ public class Context
 				advanceTurn();	// other player to move next
 			}
 
-			if(!(pieces[dstX][dstY] instanceof King)) // has yet to be crowned perhaps
+			if(!(pieces[dstX][dstY] instanceof ItemRei)) // has yet to be crowned perhaps
 			{
 				if((dstY == HEIGHT - 1) && pieces[dstX][dstY].isLight())
-					pieces[dstX][dstY] = King.createLightKing();
+					pieces[dstX][dstY] = ItemRei.criarReiClaro();
 				else if(dstY == 0 && pieces[dstX][dstY].isDark())
-					pieces[dstX][dstY] = King.createDarkKing();
+					pieces[dstX][dstY] = ItemRei.criarReiEscuro();
 			}
 
 			movementHistory.add(new int[]{srcX, srcY, dstX, dstY});
@@ -146,7 +146,7 @@ public class Context
 	{
 		ArrayList<int[]> destinations = new ArrayList<int[]>();
 
-		if(pieces[srcX][srcY].isLight() || pieces[srcX][srcY] instanceof King)
+		if(pieces[srcX][srcY].isLight() || pieces[srcX][srcY] instanceof ItemRei)
 		{
 			if(srcY <= HEIGHT - 3)		// otherwise simply impossible to jump ..
 			{
@@ -156,7 +156,7 @@ public class Context
 					if(pieces[srcX + 2][srcY + 2] == null)
 					{
 						// check if there is an enemy in front of us
-						if(pieces[srcX + 1][srcY + 1] != null && !pieces[srcX + 1][srcY + 1].getColor().equals(pieces[srcX][srcY].getColor()))
+						if(pieces[srcX + 1][srcY + 1] != null && !pieces[srcX + 1][srcY + 1].getCor().equals(pieces[srcX][srcY].getCor()))
 							destinations.add(new int[]{srcX + 2, srcY + 2});
 					}
 				}
@@ -167,14 +167,14 @@ public class Context
 					if(pieces[srcX - 2][srcY + 2] == null)
 					{
 						// check if there is an enemy in front of us
-						if(pieces[srcX - 1][srcY + 1] != null && !pieces[srcX - 1][srcY + 1].getColor().equals(pieces[srcX][srcY].getColor()))
+						if(pieces[srcX - 1][srcY + 1] != null && !pieces[srcX - 1][srcY + 1].getCor().equals(pieces[srcX][srcY].getCor()))
 							destinations.add(new int[]{srcX - 2, srcY + 2});
 					}
 				}
 			}
 		}
 
-		if(pieces[srcX][srcY].isDark() || pieces[srcX][srcY] instanceof King)	// we're allowed to jump backwards
+		if(pieces[srcX][srcY].isDark() || pieces[srcX][srcY] instanceof ItemRei)	// we're allowed to jump backwards
 		{
 			if(srcY >= 2)	// otherwise simply impossible to jump ..
 			{
@@ -184,7 +184,7 @@ public class Context
 					if(pieces[srcX + 2][srcY - 2] == null)
 					{
 						// check if there is an enemy in front of us
-						if(pieces[srcX + 1][srcY - 1] != null && !pieces[srcX + 1][srcY - 1].getColor().equals(pieces[srcX][srcY].getColor()))
+						if(pieces[srcX + 1][srcY - 1] != null && !pieces[srcX + 1][srcY - 1].getCor().equals(pieces[srcX][srcY].getCor()))
 							destinations.add(new int[]{srcX + 2, srcY - 2});
 					}
 				}
@@ -195,7 +195,7 @@ public class Context
 					if(pieces[srcX - 2][srcY - 2] == null)
 					{
 						// check if there is an enemy in front of us
-						if(pieces[srcX - 1][srcY - 1] != null && !pieces[srcX - 1][srcY - 1].getColor().equals(pieces[srcX][srcY].getColor()))
+						if(pieces[srcX - 1][srcY - 1] != null && !pieces[srcX - 1][srcY - 1].getCor().equals(pieces[srcX][srcY].getCor()))
 							destinations.add(new int[]{srcX - 2, srcY - 2});
 					}
 				}
@@ -217,7 +217,7 @@ public class Context
 
 		if(pieces[srcX][srcY] != null)
 		{
-			if(pieces[srcX][srcY].isLight() || pieces[srcX][srcY] instanceof King)
+			if(pieces[srcX][srcY].isLight() || pieces[srcX][srcY] instanceof ItemRei)
 			{
 				// upwards
 				if(srcY + 1 < HEIGHT)
@@ -236,7 +236,7 @@ public class Context
 				}
 			}
 
-			if(pieces[srcX][srcY].isDark() || pieces[srcX][srcY] instanceof King)
+			if(pieces[srcX][srcY].isDark() || pieces[srcX][srcY] instanceof ItemRei)
 			{
 				// downwards
 				if(srcY - 1 >= 0)
@@ -389,7 +389,7 @@ public class Context
 	{
 		if(o instanceof Context)
 		{
-			Piece[][] p = ((Context) o).getPieces();
+			Item[][] p = ((Context) o).getPieces();
 
 			for(int i = 0; i < WIDTH; i++)
 			{
@@ -399,9 +399,9 @@ public class Context
 						return false;
 					else if(p[i][j] != null && pieces[i][j] != null)
 					{
-						if(p[i][j] instanceof King ^ pieces[i][j] instanceof King)
+						if(p[i][j] instanceof ItemRei ^ pieces[i][j] instanceof ItemRei)
 							return false;
-						if(!p[i][j].getColor().equals(pieces[i][j].getColor()))
+						if(!p[i][j].getCor().equals(pieces[i][j].getCor()))
 							return false;
 					}
 				}

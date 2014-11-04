@@ -5,10 +5,10 @@ package br.ufal.ic.ia;
  * @author Arjen Hoogesteger
  * @version 0.1
  */
-public interface CPUPlayer
+public interface JogadorCPU
 {
 	/**
 	 * 
 	 */
-	public void takeTurn();
+	public void minhaVez();
 }

@@ -5,21 +5,21 @@ package br.ufal.ic.ia;
  * @author Arjen Hoogesteger
  * @version 0.1
  */
-public class HumanPlayer extends Player
+public class JogadorHumano extends Jogador
 {
 	/**
 	 * 
 	 * @param name
 	 */
-	public HumanPlayer(String name)
+	public JogadorHumano(String name)
 	{
 		super(name);
 	}
 
 	@Override
-	public void takeTurn()
+	public void minhaVez()
 	{
-		super.takeTurn();
+		super.minhaVez();
 		System.out.println(getName() + "'s turn!");
 		getBoard().enableMouseListener();	// we're human and need the board to listen to us
 	}

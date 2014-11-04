@@ -7,20 +7,20 @@ import java.util.ArrayList;
  * @author Arjen Hoogesteger
  * @version 0.2
  */
-public abstract class Player
+public abstract class Jogador
 {
-	private String name;
-	private Board board;
-	private boolean hasTurn = false;
+	private String nome;
+	private Tabuleiro tabuleiro;
+	private boolean minhaVez = false;
 	private ArrayList<PlayerListener> listeners = new ArrayList<PlayerListener>();
 
 	/**
 	 * Creates a new Player object.
 	 * @param name the player's name
 	 */
-	public Player(String name)
+	public Jogador(String name)
 	{
-		this.name = name;
+		this.nome = name;
 	}
 
 	/**
@@ -36,18 +36,18 @@ public abstract class Player
 	 *
 	 * @param board
 	 */
-	public void setBoard(Board board)
+	public void setBoard(Tabuleiro board)
 	{
-		this.board = board;
+		this.tabuleiro = board;
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public Board getBoard()
+	public Tabuleiro getBoard()
 	{
-		return board;
+		return tabuleiro;
 	}
 
 	/**
@@ -56,15 +56,15 @@ public abstract class Player
 	 */
 	public String getName()
 	{
-		return name;
+		return nome;
 	}
 
 	/**
 	 * 
 	 */
-	public void takeTurn()
+	public void minhaVez()
 	{
-		hasTurn = true;
+		minhaVez = true;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public abstract class Player
 	 */
 	public void stopTurn()
 	{
-		hasTurn = false;
+		minhaVez = false;
 
 		for(PlayerListener l : listeners)
 			l.finishedTurn(this);
@@ -84,6 +84,6 @@ public abstract class Player
 	 */
 	public boolean hasTurn()
 	{
-		return hasTurn;
+		return minhaVez;
 	}
 }

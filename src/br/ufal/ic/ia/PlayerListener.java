@@ -7,5 +7,5 @@ package br.ufal.ic.ia;
  */
 public interface PlayerListener
 {
-	public void finishedTurn(Player p);
+	public void finishedTurn(Jogador p);
 }

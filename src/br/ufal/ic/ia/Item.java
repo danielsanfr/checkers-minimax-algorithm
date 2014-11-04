@@ -9,10 +9,10 @@ import java.awt.Graphics;
  * @author Elio Tolhoek
  * @version 0.1
  */
-public class Piece
+public class Item
 {
-	protected static final Color LIGHT = new Color(251, 249, 246);
-	protected static final Color DARK = Color.BLACK;
+	protected static final Color CLARO = new Color(251, 249, 246);
+	protected static final Color ESCURO = Color.BLACK;
 
 	private Color color;
 
@@ -20,25 +20,25 @@ public class Piece
 	 *
 	 * @return
 	 */
-	public static Piece createLightPiece()
+	public static Item criarItemClaro()
 	{
-		return new Piece(LIGHT);
+		return new Item(CLARO);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static Piece createDarkPiece()
+	public static Item criarItemEscuro()
 	{
-		return new Piece(DARK);
+		return new Item(ESCURO);
 	}
 
 	/**
 	 * Creates a new Piece instance.
 	 * @param color the piece's color
 	 */
-	protected Piece(Color color)
+	protected Item(Color color)
 	{
 		this.color = color;
 	}
@@ -47,7 +47,7 @@ public class Piece
 	 * Draws the piece.
 	 * @param g the associated Graphics instance
 	 */
-    public void draw(Graphics g)
+    public void desenhar(Graphics g)
     {
         int x = 30, y = 30, radius = 20;
 		
@@ -59,7 +59,7 @@ public class Piece
      * Returns the piece's color.
      * @return the color
      */
-	public Color getColor()
+	public Color getCor()
 	{
 		return color;
 	}
@@ -70,7 +70,7 @@ public class Piece
 	 */
 	public boolean isDark()
 	{
-		return color.equals(DARK);
+		return color.equals(ESCURO);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class Piece
 	 */
 	public boolean isLight()
 	{
-		return color.equals(LIGHT);
+		return color.equals(CLARO);
 	}
 
 	@Override

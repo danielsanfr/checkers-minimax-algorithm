@@ -8,44 +8,44 @@ import java.awt.Graphics;
  * @author Arjen Hoogesteger
  * @version 0.1
  */
-public class King extends Piece
+public class ItemRei extends Item
 {
 	/**
 	 * 
 	 * @return
 	 */
-	public static King createLightKing()
+	public static ItemRei criarReiClaro()
 	{
-		return new King(Piece.LIGHT);
+		return new ItemRei(Item.CLARO);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static King createDarkKing()
+	public static ItemRei criarReiEscuro()
 	{
-		return new King(Piece.DARK);
+		return new ItemRei(Item.ESCURO);
 	}
 
 	/**
 	 * 
 	 * @param color
 	 */
-	protected King(Color color)
+	protected ItemRei(Color color)
 	{
 		super(color);
 	}
 
 	@Override
-	public void draw(Graphics g)
+	public void desenhar(Graphics g)
 	{
-		super.draw(g);
+		super.desenhar(g);
 
 		if(isLight())
-			g.setColor(Piece.DARK);
+			g.setColor(Item.ESCURO);
 		else
-			g.setColor(Piece.LIGHT);
+			g.setColor(Item.CLARO);
 
 		// both arrays must have same size
 		int[] xcoords = {1, 8, 16, 23, 31, 28, 3};

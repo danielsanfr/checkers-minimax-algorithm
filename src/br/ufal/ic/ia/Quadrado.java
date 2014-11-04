@@ -10,10 +10,10 @@ import javax.swing.JPanel;
  * @author Elio Tolhoek
  * @version 0.2
  */
-public class Square extends JPanel
+public class Quadrado extends JPanel
 {
 	private Color color;
-	private Piece piece = null;
+	private Item piece = null;
 	private boolean selected = false;
 	private boolean targeted = false;
 
@@ -26,7 +26,7 @@ public class Square extends JPanel
 	 * @param x the matching x coordinate of the board
 	 * @param y the matching y coordinate of the board
 	 */
-	public Square(Color color, int x, int y)
+	public Quadrado(Color color, int x, int y)
 	{
 		this.color = color;
         this.x = x;
@@ -84,7 +84,7 @@ public class Square extends JPanel
 		g.fillRect(0, 0, this.getPreferredSize().width, this.getPreferredSize().height);
 		
         if(piece != null)
-            piece.draw(g);
+            piece.desenhar(g);
     }
 
 	/**
@@ -100,7 +100,7 @@ public class Square extends JPanel
 	 * Sets the piece for this square.
 	 * @param piece the piece
 	 */
-	public void setPiece(Piece piece)
+	public void setPiece(Item piece)
 	{
 		this.piece = piece;
 	}
@@ -109,7 +109,7 @@ public class Square extends JPanel
 	 * Returns the piece for this square.
 	 * @return the piece
 	 */
-	public Piece getPiece()
+	public Item getPiece()
 	{
 		return piece;
 	}

@@ -5,7 +5,7 @@ package br.ufal.ic.ia;
  * @author Arjen Hoogesteger
  * @version 0.1
  */
-public class MinimaxPlayer extends Player
+public class MinimaxPlayer extends Jogador
 {
 
 	/**
@@ -18,9 +18,9 @@ public class MinimaxPlayer extends Player
 	}
 	
 	@Override
-	public void takeTurn()
+	public void minhaVez()
 	{
-		super.takeTurn();
+		super.minhaVez();
 		
 		// yet to be done quite important however
 	}
