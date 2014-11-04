@@ -6,8 +6,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Arjen Hoogesteger
- * @author Elio Tolhoek
+ * @author 
  * @version 0.2
  */
 public class Quadrado extends JPanel

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Arjen Hoogesteger
+ * @author 
  * @version 0.4
  */
 public class Context
@@ -47,6 +47,10 @@ public class Context
 		quantidadePecas();
 	}
 
+	/**
+	 * Retorna diferença de peças entre jogadores
+	 * @return
+	 */
 	public int[] quantidadePecas() {
 		//claro, escuro
 		int[] totalPecas = {0,0};

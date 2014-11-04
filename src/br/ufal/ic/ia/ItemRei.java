@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author Arjen Hoogesteger
+ * @author 
  * @version 0.1
  */
 public class ItemRei extends Item
