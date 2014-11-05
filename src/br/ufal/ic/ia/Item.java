@@ -33,7 +33,7 @@ public class Item
 	public void setPosicaoAtual(int x, int y) {
 		this.posicaoAtual[0]=x;
 		this.posicaoAtual[1]=y;
-		System.out.println(posicaoAtual[0] + "," + posicaoAtual[1]);
+		//System.out.println(posicaoAtual[0] + "," + posicaoAtual[1]);
 	}
 	
 	/**

@@ -38,23 +38,41 @@ public abstract class Jogador
 	/**
 	 * Função minimax
 	 * Incompleta 
+	 * OBS: deve realizar um movimento ou uma sequencia de movimentos
+	 *	sinal ainda não está sendo usado 
 	 */
 	protected void minimax(int sinal) {
+		//pecas deste jogador que podem se movimentar
 		ArrayList<Item>pecasASeremAnalisadas = tabuleiro.getContext().retornarPecasQuePodemSeMover(this);
 		int maiorPontuacao=-1;
 		
 		for (Item item:pecasASeremAnalisadas) {
+			int pulos=0;
+			
+			//se esta peça pode comer outra, entrar
 			if (tabuleiro.getContext().pieceCouldJumpToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1])!=null) {
-				ArrayList<int[]>possiveisDestinos = tabuleiro.getContext().pieceCouldJumpToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1]);
-				for (int[] destino:possiveisDestinos) {
-					Context tempContext = tabuleiro.getContext();
-					if (tempContext.temPulosRestantes()) {
-						
-					}
+				int[] destinoPrimeiroPulo = tabuleiro.getContext().pieceCouldJumpToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1]).get(0);
+				//criar contexto temporario, já que várias jogadas serão analisadas
+				Context tempContext = tabuleiro.getContext();
+				//sempre haverá somente uma opção de primeiro pulo por rodada; fazer tal movimento:
+				tempContext.move(item.posicaoAtual[0], item.posicaoAtual[1], destinoPrimeiroPulo[0], destinoPrimeiroPulo[1]);
+				pulos++;
+				
+				//proximo destino temporario
+				int[] tempDest = {destinoPrimeiroPulo[0],destinoPrimeiroPulo[1]};
+				
+				int pulosAdicionais=0;
+				int[] destEscolhido;
+				
+				//para cada uma das proximas opções de pulos, é preciso escolher a melhor opção
+				for (int[]puloSeguinte:tempContext.pieceCouldJumpToFrom(tempDest[0], tempDest[1])) {
+					//calcular e guardar a quantidade de pulos que seria possivel caso este pulo fosse escolhido dentre todas as outras opções
+					//se maior que o guardado ate agora, guardar a origem e destino para efetuar o movimento na saída do for
 				}
+				//fazer o movimento temp.context.move()
+				//salvar melhor opcao para comparar com outros do for externo
 			}
 		}
-		
 	}
 	
 	/**

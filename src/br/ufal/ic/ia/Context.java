@@ -35,11 +35,13 @@ public class Context
 				// cria peças e organiza tabuleiro
 				if(i % 2 == j % 2)
 				{
-					if(j < (ALTURA / 2) - 1)
+					if(j < (ALTURA / 2) - 1) {
 						pieces[i][j] = Item.criarItemClaro(jogador1);
-					else if(j > ALTURA / 2)
+						pieces[i][j].setPosicaoAtual(i, j);
+					} else if(j > ALTURA / 2) {
 						pieces[i][j] = Item.criarItemEscuro(jogador2);
-					else
+						pieces[i][j].setPosicaoAtual(i, j);
+					} else
 						pieces[i][j] = null;
 				}
 			}
@@ -165,12 +167,12 @@ public class Context
 				if(pieceCouldJumpToFrom(dstX, dstY).size() == 0)
 				{
 					advanceTurn();
-					System.out.println("Tempulosrestantes: " + temPulosRestantes());
+					//System.out.println("Tempulosrestantes: " + temPulosRestantes());
 					if(temPulosRestantes())
 						unsetRemainingJump();	// no remaining jumps from here
 				}
 				else {
-					System.out.println("setting");
+					//System.out.println("setting");
 					setRemainingJump(dstX, dstY);	// player's next move has to be a jump from here
 				}
 			}
