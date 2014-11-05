@@ -9,15 +9,15 @@ import java.util.ArrayList;
  */
 public class Context
 {
-	private static final char TURN_DARK = 0x000F;
-	private static final char TURN_LIGHT = 0x00F0;
-	public static final int HEIGHT = 8;
-	public static final int WIDTH = 8;
+	private static final char VEZ_ESCURO = 0x000F;
+	private static final char VEZ_CLARO = 0x00F0;
+	public static final int ALTURA = 8;
+	public static final int LARGURA = 8;
 
-	private ArrayList<int[]> movementHistory = new ArrayList<int[]>();
-	private Item[][] pieces = new Item[WIDTH][HEIGHT];
-	private char turn = TURN_DARK;	// dark is basically an alias for player 1
-	private int remainingJumpX = -1, remainingJumpY = -1;
+	private ArrayList<int[]> historicoMovimentos = new ArrayList<int[]>();
+	private Item[][] pieces = new Item[LARGURA][ALTURA];
+	private char turn = VEZ_ESCURO;	// dark is basically an alias for player 1
+	private int puloRestanteX = -1, puloRestanteY = -1;
 
 	private Jogador jogador1;
 	private Jogador jogador2;
@@ -28,16 +28,16 @@ public class Context
 		this.jogador2=jogador2;
 		
 		// criar contexto inicial
-		for(int i = 0; i < WIDTH; i++)
+		for(int i = 0; i < LARGURA; i++)
 		{
-			for(int j = 0; j < HEIGHT; j++)
+			for(int j = 0; j < ALTURA; j++)
 			{
 				// cria peças e organiza tabuleiro
 				if(i % 2 == j % 2)
 				{
-					if(j < (HEIGHT / 2) - 1)
+					if(j < (ALTURA / 2) - 1)
 						pieces[i][j] = Item.criarItemClaro(jogador1);
-					else if(j > HEIGHT / 2)
+					else if(j > ALTURA / 2)
 						pieces[i][j] = Item.criarItemEscuro(jogador2);
 					else
 						pieces[i][j] = null;
@@ -48,14 +48,38 @@ public class Context
 	}
 
 	/**
+	 * @author yvesbastos
+	 * Função que analisa o tabuleiro e retorna um array de todas as peças do donoDaPeca que podem se mover
+	 * @param donoDaPeca
+	 * @return
+	 */
+	public ArrayList<Item> retornarPecasQuePodemSeMover(Jogador donoDaPeca) {
+		ArrayList<Item> pecasQuePodemSeMover = new ArrayList<Item>();
+		
+		for (int i=0; i<LARGURA; i++) {
+			for (int j=0; j<ALTURA; j++) {
+				if ((i % 2 == j % 2) && (pieces[i][j] != null)) {
+					ArrayList<int[]> movimentosPossiveis = pieceCouldMoveToFrom(i, j);
+					if (pieces[i][j].getDono().equals(donoDaPeca) && movimentosPossiveis.size()>0) {
+						pieces[i][j].definirDestinosPossiveis(movimentosPossiveis);
+						pecasQuePodemSeMover.add(pieces[i][j]);
+					}
+				}
+			}
+		}
+		return pecasQuePodemSeMover;
+	}
+	
+	/**
+	 * @author yvesbastos
 	 * Retorna diferença de peças entre jogadores
 	 * @return
 	 */
 	public int[] quantidadePecas() {
 		//claro, escuro
 		int[] totalPecas = {0,0};
-		for (int i=0; i<WIDTH; i++) {
-			for (int j=0; j<HEIGHT; j++) {
+		for (int i=0; i<LARGURA; i++) {
+			for (int j=0; j<ALTURA; j++) {
 				if ((i % 2 == j % 2) && (pieces[i][j] != null)) {
 					if (pieces[i][j].isDark()) {
 						totalPecas[1]+=1;
@@ -66,27 +90,27 @@ public class Context
 				}
 			}
  		}
-		System.out.println("Peças claras: " + totalPecas[0] + "\nPeças escuras: " + totalPecas[1]);
+		//System.out.println("Peças claras: " + totalPecas[0] + "\nPeças escuras: " + totalPecas[1]);
 
 		return totalPecas;
 	}
 	
 	/**
-	 * Returns whether or not it is the light player's turn.
-	 * @return true if light player's turn, otherwise false
+	 * Retorna se é a vez do jogador claro 
+	 * @return verdadeiro se for, falso se não
 	 */
-	public boolean isTurnLight()
+	public boolean vezDoJogadorClaro()
 	{
-		return turn == TURN_LIGHT;
+		return turn == VEZ_CLARO;
 	}
 
 	/**
-	 * Returns whether or not it is the dark player's turn.
-	 * @return true if dark player's turn, otherwise false
+	 * Retorna se é a vez do jogador escuro. 
+	 * @return verdadeiro se for, falso se não 
 	 */
-	public boolean isTurnDark()
+	public boolean vezDoJogadorEscuro()
 	{
-		return turn == TURN_DARK;
+		return turn == VEZ_ESCURO;
 	}
 
 
@@ -103,9 +127,10 @@ public class Context
 	 *
 	 * @return
 	 */
-	public boolean hasRemainingJump()
+	public boolean temPulosRestantes()
 	{
-		return remainingJumpX > -1 && remainingJumpY > -1;
+		//System.out.println(puloRestanteX > -1 && puloRestanteY > -1);
+		return puloRestanteX > -1 && puloRestanteY > -1;
 	}
 
 	/**
@@ -114,7 +139,7 @@ public class Context
 	 */
 	public ArrayList<int[]> getMovementHistory()
 	{
-		return movementHistory;
+		return historicoMovimentos;
 	}
 
 	/**
@@ -137,7 +162,7 @@ public class Context
 				if(pieceCouldJumpToFrom(dstX, dstY).size() == 0)
 				{
 					advanceTurn();
-					if(hasRemainingJump())
+					if(temPulosRestantes())
 						unsetRemainingJump();	// no remaining jumps from here
 				}
 				else
@@ -153,13 +178,13 @@ public class Context
 
 			if(!(pieces[dstX][dstY] instanceof ItemRei)) // has yet to be crowned perhaps
 			{
-				if((dstY == HEIGHT - 1) && pieces[dstX][dstY].isLight())
+				if((dstY == ALTURA - 1) && pieces[dstX][dstY].isLight())
 					pieces[dstX][dstY] = ItemRei.criarReiClaro(jogador1);
 				else if(dstY == 0 && pieces[dstX][dstY].isDark())
 					pieces[dstX][dstY] = ItemRei.criarReiEscuro(jogador2);
 			}
 
-			movementHistory.add(new int[]{srcX, srcY, dstX, dstY});
+			historicoMovimentos.add(new int[]{srcX, srcY, dstX, dstY});
 
 			return true;
 		}
@@ -179,9 +204,9 @@ public class Context
 
 		if(pieces[srcX][srcY].isLight() || pieces[srcX][srcY] instanceof ItemRei)
 		{
-			if(srcY <= HEIGHT - 3)		// otherwise simply impossible to jump ..
+			if(srcY <= ALTURA - 3)		// otherwise simply impossible to jump ..
 			{
-				if(srcX + 2 < WIDTH)	// jump right
+				if(srcX + 2 < LARGURA)	// jump right
 				{
 					// check if the destination is empty
 					if(pieces[srcX + 2][srcY + 2] == null)
@@ -209,7 +234,7 @@ public class Context
 		{
 			if(srcY >= 2)	// otherwise simply impossible to jump ..
 			{
-				if(srcX + 2 < WIDTH)	// jump right
+				if(srcX + 2 < LARGURA)	// jump right
 				{
 					// check if the destination is empty
 					if(pieces[srcX + 2][srcY - 2] == null)
@@ -251,9 +276,9 @@ public class Context
 			if(pieces[srcX][srcY].isLight() || pieces[srcX][srcY] instanceof ItemRei)
 			{
 				// upwards
-				if(srcY + 1 < HEIGHT)
+				if(srcY + 1 < ALTURA)
 				{
-					if(srcX + 1 < WIDTH)
+					if(srcX + 1 < LARGURA)
 					{
 						if(pieces[srcX + 1][srcY + 1] == null)
 							destinations.add(new int[]{srcX + 1, srcY + 1});	// right
@@ -272,7 +297,7 @@ public class Context
 				// downwards
 				if(srcY - 1 >= 0)
 				{
-					if(srcX + 1 < WIDTH)
+					if(srcX + 1 < LARGURA)
 					{
 						if(pieces[srcX + 1][srcY - 1] == null)
 							destinations.add(new int[]{srcX + 1, srcY - 1});	// right
@@ -289,7 +314,7 @@ public class Context
 
 		return destinations;
 	}
-
+	
 	/**
 	 *
 	 * @return
@@ -324,15 +349,15 @@ public class Context
 	 */
 	private boolean canJump()
 	{
-		for(int i = 0; i < WIDTH; i++)
+		for(int i = 0; i < LARGURA; i++)
 		{
-			for(int j = 0; j < HEIGHT; j++)
+			for(int j = 0; j < ALTURA; j++)
 			{
 				if(pieces[i][j] != null)
 				{
-					if(isTurnLight() && pieces[i][j].isLight() && pieceCouldJumpToFrom(i, j).size() > 0)
+					if(vezDoJogadorClaro() && pieces[i][j].isLight() && pieceCouldJumpToFrom(i, j).size() > 0)
 						return true;
-					else if(isTurnDark() && pieces[i][j].isDark() && pieceCouldJumpToFrom(i, j).size() > 0)
+					else if(vezDoJogadorEscuro() && pieces[i][j].isDark() && pieceCouldJumpToFrom(i, j).size() > 0)
 						return true;
 				}
 			}
@@ -353,13 +378,13 @@ public class Context
 	{
 		if(pieces[srcX][srcY] != null)
 		{
-			if((pieces[srcX][srcY].isLight() && isTurnLight()) || (pieces[srcX][srcY].isDark() && isTurnDark()))
+			if((pieces[srcX][srcY].isLight() && vezDoJogadorClaro()) || (pieces[srcX][srcY].isDark() && vezDoJogadorEscuro()))
 			{
 				ArrayList<int[]> dsts = new ArrayList<int[]>();
 
-				if(hasRemainingJump())
+				if(temPulosRestantes())
 				{
-					if(srcX == remainingJumpX && srcY == remainingJumpY)
+					if(srcX == puloRestanteX && srcY == puloRestanteY)
 						dsts = pieceCouldJumpToFrom(srcX, srcY);
 				}
 				else
@@ -397,8 +422,8 @@ public class Context
 	{
 		if(x > -1 && y > -1)
 		{
-			remainingJumpX = x;
-			remainingJumpY = y;
+			puloRestanteX = x;
+			puloRestanteY = y;
 
 			return true;
 		}
@@ -411,8 +436,8 @@ public class Context
 	 */
 	private void unsetRemainingJump()
 	{
-		remainingJumpX = -1;
-		remainingJumpY = -1;
+		puloRestanteX = -1;
+		puloRestanteY = -1;
 	}
 
 	@Override
@@ -422,9 +447,9 @@ public class Context
 		{
 			Item[][] p = ((Context) o).getPieces();
 
-			for(int i = 0; i < WIDTH; i++)
+			for(int i = 0; i < LARGURA; i++)
 			{
-				for(int j = 0; j < HEIGHT; j++)
+				for(int j = 0; j < ALTURA; j++)
 				{
 					if(p[i][j] == null ^ pieces[i][j] == null)
 						return false;

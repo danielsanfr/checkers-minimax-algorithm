@@ -21,7 +21,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	private static final int ALTURA_QUADRADO = 60;
 	private Quadrado source = null;
 	private Context contexto;
-	private Quadrado[][] quadrados = new Quadrado[Context.WIDTH][Context.HEIGHT];
+	private Quadrado[][] quadrados = new Quadrado[Context.LARGURA][Context.ALTURA];
 	private boolean mouseListener;
 	
 	
@@ -51,11 +51,11 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 				((FlowLayout)getLayout()).setVgap(0);
 
 				// set preferred size for the board
-				setPreferredSize(new Dimension(Context.WIDTH * LARGURA_QUADRADO, Context.HEIGHT * ALTURA_QUADRADO));
+				setPreferredSize(new Dimension(Context.LARGURA * LARGURA_QUADRADO, Context.ALTURA * ALTURA_QUADRADO));
 
-				for(int i = 0; i < Context.WIDTH; i++)
+				for(int i = 0; i < Context.LARGURA; i++)
 				{
-					for(int j = 0; j < Context.HEIGHT; j++)
+					for(int j = 0; j < Context.ALTURA; j++)
 					{
 						// decide se cria quadrado preto ou branco
 						quadrados[i][j] = i % 2 == j % 2 ? new Quadrado(new Color(250, 67, 0, 168), i, j) : new Quadrado(new Color(244, 241, 237), i, j);
@@ -69,9 +69,9 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 				}
 
 				// adiciona quadrados ao tabuleiro na ordem correta
-				for(int i = Context.HEIGHT - 1; i >= 0; i--)
+				for(int i = Context.ALTURA - 1; i >= 0; i--)
 				{
-					for(int j = 0; j < Context.WIDTH; j++)
+					for(int j = 0; j < Context.LARGURA; j++)
 						add(quadrados[j][i]);
 				}
 				
@@ -102,9 +102,9 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 	{
 		Item[][] pieces = contexto.getPieces();
 
-		for(int i = 0; i < Context.WIDTH; i++)
+		for(int i = 0; i < Context.LARGURA; i++)
 		{
-			for(int j = 0; j < Context.HEIGHT; j++)
+			for(int j = 0; j < Context.ALTURA; j++)
 			{
 				quadrados[i][j].setPiece(pieces[i][j]);
 			}
@@ -153,7 +153,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 			jogadorApertouNaSua = true;
 		}
 		else {
-			jogadorApertouNaSua = ( (((Quadrado) e.getSource()).getPiece().isLight() && contexto.isTurnLight()) || (((Quadrado) e.getSource()).getPiece().isDark() && contexto.isTurnDark()) );
+			jogadorApertouNaSua = ( (((Quadrado) e.getSource()).getPiece().isLight() && contexto.vezDoJogadorClaro()) || (((Quadrado) e.getSource()).getPiece().isDark() && contexto.vezDoJogadorEscuro()) );
 		}
 		
 		if(mouseListener && jogadorApertouNaSua)
@@ -207,11 +207,11 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 					System.out.println("UNABLE TO MOVE [" + source.getCoordinateX() + ", " + source.getCoordinateY() + "] -> [" + destination.getCoordinateX() + ", " + destination.getCoordinateY() + "]");
 			}
 
-			if(contexto.isTurnDark() && jogador2.hasTurn())
+			if(contexto.vezDoJogadorEscuro() && jogador2.hasTurn())
 			{
 				jogador2.stopTurn();
 			}
-			else if(contexto.isTurnLight() && jogador1.hasTurn())
+			else if(contexto.vezDoJogadorClaro() && jogador1.hasTurn())
 			{
 				jogador1.stopTurn();
 			}

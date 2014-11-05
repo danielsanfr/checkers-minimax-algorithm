@@ -2,6 +2,7 @@ package br.ufal.ic.ia;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,10 +14,16 @@ public class Item
 	protected static final Color CLARO = new Color(251, 249, 246);
 	protected static final Color ESCURO = Color.BLACK;
 
+	protected ArrayList<int[]> podeIrPara;
+	
 	private Color color;
 	
 	private Jogador dono;
 
+	public void definirDestinosPossiveis(ArrayList<int[]> destinos) {
+		podeIrPara = destinos;// (ArrayList<int[]>) destinos.clone();
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -51,6 +58,7 @@ public class Item
 	{
 		this.color = color;
 		this.dono = dono;
+		podeIrPara = new ArrayList<int[]>();
 	}
 
 	/**

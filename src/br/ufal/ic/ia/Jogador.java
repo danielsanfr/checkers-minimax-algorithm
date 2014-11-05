@@ -79,7 +79,7 @@ public abstract class Jogador
 		minhaVez = true;
 		
 		if (humano) {
-			System.out.println("Vez do(a) " + getName() + "!");
+			//System.out.println("Vez do(a) " + getName() + "!");
 			getBoard().ativarMouseListener();	// we're human and need the board to listen to us
 		} 
 	}
