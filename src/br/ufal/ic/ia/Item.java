@@ -15,6 +15,7 @@ public class Item
 	protected static final Color ESCURO = Color.BLACK;
 
 	protected ArrayList<int[]> podeIrPara;
+	protected int[] posicaoAtual;
 	
 	private Color color;
 	
@@ -22,6 +23,25 @@ public class Item
 
 	public void definirDestinosPossiveis(ArrayList<int[]> destinos) {
 		podeIrPara = destinos;// (ArrayList<int[]>) destinos.clone();
+	}
+	
+	/**
+	 * @author yvesbastos
+	 * @param x
+	 * @param y
+	 */
+	public void setPosicaoAtual(int x, int y) {
+		this.posicaoAtual[0]=x;
+		this.posicaoAtual[1]=y;
+		System.out.println(posicaoAtual[0] + "," + posicaoAtual[1]);
+	}
+	
+	/**
+	 * @author yvesbastos
+	 * @return
+	 */
+	public int[] getPosicaoAtual() {
+		return posicaoAtual;
 	}
 	
 	/**
@@ -59,6 +79,7 @@ public class Item
 		this.color = color;
 		this.dono = dono;
 		podeIrPara = new ArrayList<int[]>();
+		posicaoAtual = new int[2];
 	}
 
 	/**

@@ -62,7 +62,9 @@ public class Context
 					ArrayList<int[]> movimentosPossiveis = pieceCouldMoveToFrom(i, j);
 					if (pieces[i][j].getDono().equals(donoDaPeca) && movimentosPossiveis.size()>0) {
 						pieces[i][j].definirDestinosPossiveis(movimentosPossiveis);
+						pieces[i][j].setPosicaoAtual(i, j);
 						pecasQuePodemSeMover.add(pieces[i][j]);
+						
 					}
 				}
 			}
@@ -158,20 +160,25 @@ public class Context
 			{
 				// jump
 				jump(srcX, srcY, dstX, dstY);
+				pieces[dstX][dstY].setPosicaoAtual(dstX, dstY);
 
 				if(pieceCouldJumpToFrom(dstX, dstY).size() == 0)
 				{
 					advanceTurn();
+					System.out.println("Tempulosrestantes: " + temPulosRestantes());
 					if(temPulosRestantes())
 						unsetRemainingJump();	// no remaining jumps from here
 				}
-				else
+				else {
+					System.out.println("setting");
 					setRemainingJump(dstX, dstY);	// player's next move has to be a jump from here
+				}
 			}
 			else
 			{
 				// move
 				pieces[dstX][dstY] = pieces[srcX][srcY];
+				pieces[dstX][dstY].setPosicaoAtual(dstX, dstY);
 				pieces[srcX][srcY] = null;
 				advanceTurn();	// other player to move next
 			}
@@ -424,10 +431,10 @@ public class Context
 		{
 			puloRestanteX = x;
 			puloRestanteY = y;
-
+			System.out.println("true");
 			return true;
 		}
-
+		System.out.println("false");
 		return false;
 	}
 

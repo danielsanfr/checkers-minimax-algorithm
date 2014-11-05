@@ -6,7 +6,7 @@ package br.ufal.ic.ia;
  */
 public class JogadorMinimax extends Jogador
 {
-	private Context contexto;
+	//private Context contexto;
 	
 	private int vantagem=-1;
 	
@@ -19,21 +19,21 @@ public class JogadorMinimax extends Jogador
 		super("CPU", false);
 	}
 	
-	public void setContexto(Context contexto) {
+	/*public void setContexto(Context contexto) {
 		this.contexto = contexto;
-	}
+	}*/
 	
 	@Override
 	public void minhaVez()
 	{
-		if (contexto.quantidadePecas()[0] == 0) {
+		if (tabuleiro.getContext().quantidadePecas()[0] == 0) {
 			//final; CPU venceu
 		} else {
 			
 		}
 		
 		super.minhaVez();
-		vantagem = contexto.quantidadePecas()[1]-contexto.quantidadePecas()[0];
+		vantagem = tabuleiro.getContext().quantidadePecas()[1]-tabuleiro.getContext().quantidadePecas()[0];
 		// implementar função minimax
 	}
 }

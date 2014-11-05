@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Jogador
 {
 	private String nome;
-	private Tabuleiro tabuleiro;
+	protected Tabuleiro tabuleiro;
 	protected boolean minhaVez = false;
 	private ArrayList<PlayerListener> listeners = new ArrayList<PlayerListener>();
 	protected final boolean humano;
@@ -33,6 +33,28 @@ public abstract class Jogador
 	public Jogador() {
 		this.nome="Computador";
 		this.humano=false;
+	}
+	
+	/**
+	 * Função minimax
+	 * Incompleta 
+	 */
+	protected void minimax(int sinal) {
+		ArrayList<Item>pecasASeremAnalisadas = tabuleiro.getContext().retornarPecasQuePodemSeMover(this);
+		int maiorPontuacao=-1;
+		
+		for (Item item:pecasASeremAnalisadas) {
+			if (tabuleiro.getContext().pieceCouldJumpToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1])!=null) {
+				ArrayList<int[]>possiveisDestinos = tabuleiro.getContext().pieceCouldJumpToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1]);
+				for (int[] destino:possiveisDestinos) {
+					Context tempContext = tabuleiro.getContext();
+					if (tempContext.temPulosRestantes()) {
+						
+					}
+				}
+			}
+		}
+		
 	}
 	
 	/**
