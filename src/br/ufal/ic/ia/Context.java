@@ -46,7 +46,7 @@ public class Context
 				}
 			}
 		}
-		quantidadePecas();
+		//quantidadePecas();
 	}
 
 	/**

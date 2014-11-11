@@ -26,14 +26,21 @@ public class JogadorMinimax extends Jogador
 	@Override
 	public void minhaVez()
 	{
-		if (tabuleiro.getContext().quantidadePecas()[0] == 0) {
+		/*if (tabuleiro.getContext().quantidadePecas()[0] == 0) {
 			//final; CPU venceu
 		} else {
 			
 		}
 		
 		super.minhaVez();
-		vantagem = tabuleiro.getContext().quantidadePecas()[1]-tabuleiro.getContext().quantidadePecas()[0];
+		vantagem = tabuleiro.getContext().quantidadePecas()[1]-tabuleiro.getContext().quantidadePecas()[0];*/
+		
+		MiniMax minimax = new MiniMax();
+		int[]origemedestino = new int[4];
+		
+		origemedestino = minimax.minimaxdecision(tabuleiro.getContext(), this);
+		
+		tabuleiro.getContext().move(origemedestino[0], origemedestino[1], origemedestino[2], origemedestino[3]);
 		// implementar função minimax
 	}
 }

@@ -262,7 +262,7 @@ public class Tabuleiro extends JPanel implements MouseListener, PlayerListener
 		JogadorMinimax jogadormini = new JogadorMinimax();
 		JogadorHumano jogadorhuman = new JogadorHumano("Raphael");
 		
-		Tabuleiro b = new Tabuleiro(jogadorhuman, jogadorhuman);
+		Tabuleiro b = new Tabuleiro(jogadorhuman, jogadormini);
 		//comentar se jogador2 for humano:
 		//((JogadorMinimax) b.jogador2).setContexto(b.getContext());
 		
