@@ -67,7 +67,7 @@ public class MiniMax {
 		}
 		
 		this.contextoFinal = contexto.clonarContexto();
-		return v;
+		return alfa; //o slide do professor diz return v, mas não faz sentido... se fosse, o alfa nunca seria usado.
 	}
 	
 	private int minvalue(Context contexto, int alfa, int beta) {
@@ -101,7 +101,7 @@ public class MiniMax {
 			
 		}
 		this.contextoFinal = contexto.clonarContexto();
-		return v;
+		return beta; //o slide do professor diz return v, mas não faz sentido... se fosse, o beta nunca seria usado
 	}
 	
 	/**
