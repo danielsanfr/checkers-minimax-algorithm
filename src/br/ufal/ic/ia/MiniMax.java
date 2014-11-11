@@ -3,72 +3,85 @@ package br.ufal.ic.ia;
 import java.util.ArrayList;
 
 public class MiniMax {
-	private Context context;
 	private Jogador jogador;
 	private int v;
 	
-	private int[] origem;
-	private int[] destino;
-			
-	public MiniMax() {
-		origem = new int[2];
-		destino = new int [2];
-	}
-	
-	public void minimaxdecision(Context context, Jogador jogador) { //nao deve ser void
-		this.context = context;
-		this.jogador = jogador;
-		v = maxvalue();
-		//return the action in SUCCESSORS(state) with value v
-	}
-	
-	private int maxvalue() {
-		ArrayList<Item> pecasquepodemsemover;
+	private int[] origemescolhida;
+	private int[] destinoescolhido;
 		
-		if (context.jogoAcabou()) {
+	
+	public MiniMax() {
+		origemescolhida = new int[2];
+		destinoescolhido = new int [2];
+	}
+	
+	public int[] minimaxdecision(Context context, Jogador jogador) { //nao deve ser void
+		int[] origemdestino = new int[4];
+		
+		this.jogador = jogador;
+		v = maxvalue(context);
+		//return the action in SUCCESSORS(state) with value v
+		
+		return origemdestino;
+	}
+	
+	private int maxvalue(Context contexto) {
+		ArrayList<Item> pecasquepodemsemover;
+		Context proximoContexto;
+		
+		if (contexto.jogoAcabou()) {
 			System.out.println("Jogo acabou, max!");
-			return utility();
+			return utility(contexto);
 		}
 		v = Integer.MIN_VALUE;
 		
-		pecasquepodemsemover = context.retornarPecasQuePodemSeMover(jogador);
+		pecasquepodemsemover = contexto.retornarPecasQuePodemSeMover(jogador);
 		for (Item item:pecasquepodemsemover) {
-			v = Math.max(v, minvalue());
+			ArrayList<int[]>destinosPossiveis;
+			proximoContexto = contexto.clonarContexto();
+			destinosPossiveis = proximoContexto.pieceCouldMoveToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1]);
+			
+			for (int[] proxDestino:destinosPossiveis) {
+				proximoContexto.move(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1], proxDestino[0], proxDestino[1]);
+				v = Math.max(v, minvalue(proximoContexto));
+			}
+			
 		}
 		return v;
 	}
 	
-	private int minvalue() {
+	private int minvalue(Context contexto) {
 		ArrayList<Item> pecasquepodemsemover;
+		Context proximoContexto;
 
-		if (context.jogoAcabou()) {
+		if (contexto.jogoAcabou()) {
 			System.out.println("Jogo acabou, min!");
-			return utility();
+			return utility(contexto);
 		}
 		
 		v = Integer.MAX_VALUE;
 		
-		pecasquepodemsemover = context.retornarPecasQuePodemSeMover(jogador);
+		pecasquepodemsemover = contexto.retornarPecasQuePodemSeMover(jogador);
 		for (Item item:pecasquepodemsemover) {
-			v = Math.min(v, maxvalue());
+			ArrayList<int[]>destinosPossiveis;
+			proximoContexto = contexto.clonarContexto();
+			destinosPossiveis = proximoContexto.pieceCouldMoveToFrom(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1]);
+			
+			for (int[] proxDestino:destinosPossiveis) {
+				proximoContexto.move(item.getPosicaoAtual()[0], item.getPosicaoAtual()[1], proxDestino[0], proxDestino[1]);
+				v = Math.min(v, maxvalue(proximoContexto));
+			}
+			
 		}
 		return v;
-		
-		/*
-		 * if TERMINAL_TEST(state) then return UTILITY(state)
-		 * v<- infinito
-		 * for a, s in SUCCESSORS(state) do 
-		 	* v<- MIN(v, maxvalue(s)) 
-		 	* return v
-		 */
 	}
 	
 	/**
 	 * @author yvesbastos
 	 * @return
 	 */
-	private int utility() {
-		return context.quantidadePecasRestantesDesteJogador(jogador);
+	private int utility(Context contexto) {
+		return contexto.quantidadePecasRestantesDesteJogador(jogador);
 	}
 	
 	

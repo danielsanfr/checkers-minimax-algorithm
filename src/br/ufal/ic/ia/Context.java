@@ -355,6 +355,23 @@ public class Context
 	}
 	
 	/**
+	 * @author yvesbastos
+	 * Clonar contexto para funcoes minimax
+	 * @return
+	 */
+	public Context clonarContexto() {
+		Context novoContexto = new Context(this.jogador1, this.jogador2);
+		novoContexto.historicoMovimentos = this.historicoMovimentos;
+		novoContexto.pieces = this.pieces;
+		novoContexto.turn = this.turn;
+		novoContexto.puloRestanteX = this.puloRestanteX;
+		novoContexto.puloRestanteY = this.puloRestanteY;
+		
+		return novoContexto;
+	}
+	
+	
+	/**
 	 *
 	 * @return
 	 */
