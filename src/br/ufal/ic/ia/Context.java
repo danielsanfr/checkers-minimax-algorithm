@@ -74,6 +74,16 @@ public class Context
 		return pecasQuePodemSeMover;
 	}
 	
+	public boolean jogoAcabou() {
+		
+		int[] quantidadepecas = quantidadePecas();
+		
+		if ((quantidadepecas[0] != 0) || (quantidadepecas[1] != 0) ) {
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * @author yvesbastos
 	 * Retorna diferença de peças entre jogadores
@@ -96,6 +106,26 @@ public class Context
  		}
 		//System.out.println("Peças claras: " + totalPecas[0] + "\nPeças escuras: " + totalPecas[1]);
 
+		return totalPecas;
+	}
+	
+	/**
+	 * 
+	 * @author yvesbastos
+	 * @param jogador
+	 * @return quantidade de pecas do jogador
+	 */
+	public int quantidadePecasRestantesDesteJogador(Jogador jogador) {
+		int totalPecas = 0;
+		for (int i=0; i<LARGURA; i++) {
+			for (int j=0; j<ALTURA; j++) {
+				if ((i % 2 == j % 2) && (pieces[i][j] != null)) {
+					if (pieces[i][j].getDono().equals(jogador)) {
+						totalPecas+=1;
+					}
+				}
+			}
+ 		}
 		return totalPecas;
 	}
 	
@@ -269,7 +299,7 @@ public class Context
 
 		return destinations;
 	}
-
+	
 	/**
 	 *
 	 * @param srcX
