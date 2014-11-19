@@ -39,8 +39,8 @@ public class JogadorMinimax extends Jogador
 		int[]origemedestino = new int[4];
 		
 		origemedestino = minimax.minimaxdecision(tabuleiro.getContext(), this);
-		
-		tabuleiro.getContext().move(origemedestino[0], origemedestino[1], origemedestino[2], origemedestino[3]);
+		System.out.println("origem: " + origemedestino[2] + " " + origemedestino[3]);
+		tabuleiro.getContext().move(origemedestino[2], origemedestino[3], origemedestino[0], origemedestino[1]);
 		// implementar função minimax
 	}
 }

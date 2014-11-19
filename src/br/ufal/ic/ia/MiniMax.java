@@ -18,24 +18,24 @@ public class MiniMax {
 		int[] melhormovimento = new int[4];
 		
 		this.jogador = jogador;
-		v = maxvalue(context, 3, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		v = maxvalue(context, 6, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		
 		//recupera historico de movimentos da rota escolhida pelo minimax
 		historico = contextoFinal.getMovementHistory();
 		//recupera origem do primeiro movimento feito (=origem do movimento escolhido)
 		
 		//erro está aqui: era para ter dois itens: origem e destino
-		if (historico.size()>1) {
+		//if (historico.size()>1) {
 			melhormovimento[0] = historico.get(0)[0];
 			melhormovimento[1] = historico.get(0)[1];
 			
 			//recupera destino do primeiro movimento feito (=destino do movimento escolhido)
-			melhormovimento[2] = historico.get(1)[0];
-			melhormovimento[3] = historico.get(1)[1];
+			melhormovimento[2] = historico.get(0)[2];
+			melhormovimento[3] = historico.get(0)[3];
 			
-		} else {
+		/*} else {
 			System.out.println("Erro!!");
-		}
+		}*/
 		
 		
 		//retorna a origem e destino do movimento escolhido para que ele seja usado na funcao move() de onde o minimax está sendo chamado
